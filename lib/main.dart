@@ -1,8 +1,9 @@
-import 'package:calculadoraativ/classes/login_details.dart';
-import 'package:calculadoraativ/widgets/login_text_field.dart';
-import 'package:calculadoraativ/widgets/tipo_login.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
+import 'classes/login_details.dart';
+import 'classes/aula09.dart';
+import 'widgets/login_text_field.dart';
+import 'widgets/tipo_login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'Tela de Login',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
       home: const MyHomePage(),
     );
@@ -43,9 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _tipoCampoLogin = TiposLogin.values[idx];
       _tipoLogin =
-          _tipoLogin.mapIndexed((indice, chave) => indice == idx).toList();
-
-      _userController.text = '';
+          _tipoLogin.mapIndexed((indice, _) => indice == idx).toList();
+      _userController.clear();
     });
   }
 
@@ -53,6 +54,34 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _senhaEscondida = !_senhaEscondida;
     });
+  }
+
+  void _fazerLogin() {
+    final usuario = _userController.text.trim();
+    final senha = _senhaController.text;
+
+    if (usuario.isEmpty || senha != 'admin') {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text('Erro no login'),
+          content: const Text('Usuário inválido ou senha incorreta.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => Aula09(nomeUsuario: _userController.text.trim()),
+        ),
+      );
+    }
   }
 
   @override
@@ -75,53 +104,57 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.75,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(width: 150, "assets/images/calcIcon.png"),
-              SizedBox(height: 48),
-              TipoLogin(tipoLogin: _tipoLogin, onPressed: _alterarTipoLogin),
-              SizedBox(height: 16),
-              LoginTextField(
-                controller: _userController,
-                tipoLogin: _tipoCampoLogin,
-              ),
-              SizedBox(height: 16),
-              TextField(
-                controller: _senhaController,
-                obscureText: _senhaEscondida,
-                decoration: InputDecoration(
-                  label: Text("Senha"),
-                  prefixIcon: Icon(Icons.lock),
-                  suffixIcon: IconButton(
-                    onPressed: _alterarVisibilidade,
-                    icon: Icon(
-                      _senhaEscondida ? Icons.visibility_off : Icons.visibility,
-                    ),
-                  ),
-                  border: OutlineInputBorder(),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset("assets/images/calcIcon.png", width: 150),
+                const SizedBox(height: 48),
+                TipoLogin(tipoLogin: _tipoLogin, onPressed: _alterarTipoLogin),
+                const SizedBox(height: 16),
+                LoginTextField(
+                  controller: _userController,
+                  tipoLogin: _tipoCampoLogin,
                 ),
-              ),
-              SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Switch(
-                    value: _memorizar,
-                    onChanged: (bool) {
-                      setState(() {
-                        _memorizar = !_memorizar;
-                      });
-                    },
+                const SizedBox(height: 16),
+                TextField(
+                  controller: _senhaController,
+                  obscureText: _senhaEscondida,
+                  decoration: InputDecoration(
+                    label: const Text("Senha"),
+                    prefixIcon: const Icon(Icons.lock),
+                    suffixIcon: IconButton(
+                      onPressed: _alterarVisibilidade,
+                      icon: Icon(
+                        _senhaEscondida
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                      ),
+                    ),
+                    border: const OutlineInputBorder(),
                   ),
-                ],
-              ),
-              SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {},
-                child: Center(child: Text("Login")),
-              ),
-            ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Switch(
+                      value: _memorizar,
+                      onChanged: (val) {
+                        setState(() {
+                          _memorizar = val;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: _fazerLogin,
+                  child: const Text("Login"),
+                ),
+              ],
+            ),
           ),
         ),
       ),
