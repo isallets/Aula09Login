@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import '../classes/disciplina.dart';
-import '../widgets/disciplina_card.dart';
+import 'package:calculadoraativ/classes/disciplina.dart';
+import 'package:calculadoraativ/widgets/disciplina_card.dart';
 
 class Aula09Disciplinas extends StatelessWidget {
-  const Aula09Disciplinas({super.key});
+  Aula09Disciplinas({super.key});
+
+  final disciplinas = Disciplina.gerarDisciplinas();
 
   @override
   Widget build(BuildContext context) {
-    final disciplinas = Disciplina.gerarDisciplinas();
-
     return ListView.builder(
       itemCount: disciplinas.length,
       itemBuilder: (context, index) {

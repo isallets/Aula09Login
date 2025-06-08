@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../classes/disciplina.dart';
+import 'package:calculadoraativ/classes/disciplina.dart';
 
 class DisciplinaCard extends StatelessWidget {
   final Disciplina disciplina;
@@ -9,12 +9,27 @@ class DisciplinaCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      elevation: 4,
-      child: ListTile(
-        leading: const Icon(Icons.book),
-        title: Text(disciplina.nome),
-        subtitle: Text('Código: ${disciplina.codigo}\nProfessor: ${disciplina.professor}'),
+      margin: const EdgeInsets.all(16.0),
+      child: SizedBox(
+        height: 100,
+        child: Row(
+          children: [
+            SizedBox(
+              width: 100,
+              child: Center(
+                child: Text(disciplina.codigo),
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(disciplina.nome),
+                Text(disciplina.professor),
+              ],
+            )
+          ],
+        )
       ),
     );
   }

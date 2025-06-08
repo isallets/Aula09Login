@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../classes/disciplina.dart';
-import '../widgets/disciplina_card.dart';
+import 'package:calculadoraativ/classes/disciplina.dart';
+import 'package:calculadoraativ/widgets/disciplina_card.dart';
 import 'dart:math';
 
 class Aula09Dashboard extends StatelessWidget {
@@ -18,9 +18,9 @@ class Aula09Dashboard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text('Bem-vindo, $nomeUsuario!',
-              style: const TextStyle(fontSize: 24)),
-          const SizedBox(height: 32),
-          const Text('Sugestão de disciplina para hoje:',
+              style: TextStyle(fontSize: 24)),
+                SizedBox(height: 32),
+                Text('Sugestão de disciplina para hoje:',
               style: TextStyle(fontSize: 18)),
           DisciplinaCard(disciplina: aleatoria),
         ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../widgets/aula09_disciplinas.dart';
-import '../widgets/aula09_dashboard.dart';
+import 'package:calculadoraativ/widgets/aula09_dashboard.dart';
+import 'package:calculadoraativ/widgets/aula09_disciplinas.dart';
 
 class Aula09 extends StatefulWidget {
   final String nomeUsuario;
@@ -21,8 +21,7 @@ class _Aula09State extends State<Aula09> {
     super.initState();
     _telas = [
       Aula09Dashboard(nomeUsuario: widget.nomeUsuario),
-      const Aula09Disciplinas(),
-      const Center(child: Text('Saindo...')),
+      Aula09Disciplinas(),
     ];
   }
 
@@ -39,9 +38,12 @@ class _Aula09State extends State<Aula09> {
               child: const Text('Cancelar'),
             ),
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                Navigator.of(context).pop();
+              },
               child: const Text('Sair'),
-            ),
+            )
           ],
         ),
       );
@@ -52,31 +54,26 @@ class _Aula09State extends State<Aula09> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) {},
+      onPopInvoked: (didPop) async {},
       child: Scaffold(
-        body: _telas[_paginaSelecionada],
+        body:Center(
+          child: _telas[_paginaSelecionada],
+        ),
         bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _paginaSelecionada,
-          onTap: _onItemTapped,
-          selectedItemColor: Colors.deepPurple,
+          backgroundColor: const Color.fromARGB(255, 252, 170, 197),
+          selectedItemColor:  Color.fromARGB(255, 36, 146, 236),
           items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.dashboard),
-              label: 'Dashboard',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.book),
-              label: 'Disciplinas',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.exit_to_app),
-              label: 'Sair',
-            ),
+            BottomNavigationBarItem(label: 'Dashboard',icon: Icon(Icons.home), backgroundColor: Colors.amberAccent),
+            BottomNavigationBarItem(label: 'Disciplinas', icon: Icon(Icons.menu_open)),
+            BottomNavigationBarItem(label: 'Sair', icon: Icon(Icons.logout)),
           ],
+          currentIndex: _paginaSelecionada,
+          onTap: _onItemTapped
         ),
       ),
     );
