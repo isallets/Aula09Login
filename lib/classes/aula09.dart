@@ -65,8 +65,8 @@ class _Aula09State extends State<Aula09> {
           child: _telas[_paginaSelecionada],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: const Color.fromARGB(255, 252, 170, 197),
-          selectedItemColor:  Color.fromARGB(255, 36, 146, 236),
+          backgroundColor: Color.fromARGB(255, 255, 255, 147),
+          selectedItemColor: Color.fromARGB(255, 36, 146, 236),
           items: const [
             BottomNavigationBarItem(label: 'Dashboard',icon: Icon(Icons.home), backgroundColor: Colors.amberAccent),
             BottomNavigationBarItem(label: 'Disciplinas', icon: Icon(Icons.menu_open)),

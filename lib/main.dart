@@ -17,8 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Tela de Login',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 252, 170, 197)),
       ),
       home: const MyHomePage(),
     );
@@ -57,14 +56,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _fazerLogin() {
-    final usuario = _userController.text.trim();
+    final usuario = _userController.text;
     final senha = _senhaController.text;
 
     if (usuario.isEmpty || senha != 'admin') {
-      showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: const Text('Erro no login'),
+      Widget mostrarDialogoErro(BuildContext context) {
+        return AlertDialog(
+          title: const Text('Erro'),
           content: const Text('Usuário inválido ou senha incorreta.'),
           actions: [
             TextButton(
@@ -72,13 +70,20 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('OK'),
             ),
           ],
-        ),
+        );
+      }
+      showDialog(
+        context: context,
+        builder: mostrarDialogoErro,
       );
     } else {
+      Widget construirTelaAula09(BuildContext context) {
+        return Aula09(nomeUsuario: _userController.text);
+      }
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => Aula09(nomeUsuario: _userController.text.trim()),
+          builder: construirTelaAula09,
         ),
       );
     }
@@ -108,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset("assets/images/calcIcon.png", width: 150),
+                Image.asset("assets/images/littletwinstars.png", width: 150),
                 const SizedBox(height: 48),
                 TipoLogin(tipoLogin: _tipoLogin, onPressed: _alterarTipoLogin),
                 const SizedBox(height: 16),
@@ -116,42 +121,40 @@ class _MyHomePageState extends State<MyHomePage> {
                   controller: _userController,
                   tipoLogin: _tipoCampoLogin,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 TextField(
                   controller: _senhaController,
                   obscureText: _senhaEscondida,
                   decoration: InputDecoration(
-                    label: const Text("Senha"),
-                    prefixIcon: const Icon(Icons.lock),
+                    label: Text("Senha"),
+                    prefixIcon: Icon(Icons.lock),
                     suffixIcon: IconButton(
                       onPressed: _alterarVisibilidade,
                       icon: Icon(
-                        _senhaEscondida
-                            ? Icons.visibility_off
-                            : Icons.visibility,
+                        _senhaEscondida ? Icons.visibility_off : Icons.visibility,
                       ),
                     ),
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Switch(
                       value: _memorizar,
-                      onChanged: (val) {
+                      onChanged: (bool) {
                         setState(() {
-                          _memorizar = val;
+                          _memorizar = !_memorizar;
                         });
                       },
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: _fazerLogin,
-                  child: const Text("Login"),
+                  child: Center(child: Text("Login")),
                 ),
               ],
             ),
